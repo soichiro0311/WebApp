@@ -8,4 +8,4 @@ services:
       - ./db/mysql_data:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=mysql
-      - MYSQL_DATABASE=app
+      - MYSQL_DATABASE=bookManage
