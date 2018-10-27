@@ -1,13 +1,18 @@
 import axios from 'axios';
 import * as React from 'react';
-require('node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css');
 import './App.css';
-var ReactBsTable = require('react-bootstrap-table');
-var ReactBs = require('react-bootstrap');
-var Button=ReactBs.Button
-var BootstrapTable = ReactBsTable.BootstrapTable;
-var TableHeaderColumn = ReactBsTable.TableHeaderColumn;
-
+import Card from '@material-ui/core/Card'
+import Table from 'material-ui/Table'
+import TableBody from 'material-ui/Table/TableBody'
+import TableRowColumn from 'material-ui/Table/TableRowColumn'
+import TableHeader from 'material-ui/Table/TableHeader'
+import TableHeaderColumn from 'material-ui/Table/TableHeaderColumn'
+import TableRow from 'material-ui/Table/TableRow'
+import AppBar from 'material-ui/AppBar';
+import Popover from 'material-ui/Popover';
+import PopoverAnimationVertical from 'material-ui/Popover/PopoverAnimationVertical';
+import Menu from 'material-ui/Menu';
+import MenuItem from 'material-ui/MenuItem';
 import logo from './logo.svg';
 
 const server = 'http://localhost:5000/books';
@@ -17,14 +22,16 @@ interface Book {
   publish_date: string,
   price: number
 }
-interface Response {
+interface State {
   isYetNull: boolean,
-  books: Book[]
+  books: Book[],
+  isMenuOpen: boolean
 }
-class App extends React.Component<{}, Response> {
+class App extends React.Component<{}, State> {
   state = {
     isYetNull: true,
-    books: []
+    books: [],
+    isMenuOpen: false
   }
   onClick = () => {
     return axios.get(server)
@@ -38,44 +45,85 @@ class App extends React.Component<{}, Response> {
       .catch((e) => {
         console.error(e);
       });
-
   }
+
+  handleToggle = () => {
+    this.setState({
+      isMenuOpen: !this.state.isMenuOpen
+    });
+  }
+
   public render() {
-    //var books = [{ title: this.state.title, publish_date: this.state.publish_date, price: this.state.price }, { title: this.state.title, publish_date: this.state.publish_date, price: this.state.price }]
+    var tableHeaders = ["title", "publish_date", "price"]
     const result = this.state.isYetNull;
     if (result) {
       return (
         <div className="App">
+          <AppBar title="Book Management App" iconClassNameRight="muidocs-icon-navigation-expand-more" showMenuIconButton={true} onLeftIconButtonClick={this.handleToggle} />
+          <Popover
+            anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+            targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+            animation={PopoverAnimationVertical}
+            open={this.state.isMenuOpen}
+          >
+            <Menu>
+              <MenuItem primaryText="書籍全検索" onClick={this.onClick} />
+              <MenuItem primaryText="メニューを閉じる" onClick={this.handleToggle} />
+            </Menu>
+          </Popover>
           <header className="App-header">
             <img src={logo} className="App-logo" alt="logo" />
-            <p className="App-title">
-              書籍管理システム
-            </p>
           </header>
-          <Button bsStyle="success" onClick={this.onClick}>書籍検索</Button>
         </div>
       );
     } else {
       return (
         <div className="App">
+          <AppBar title="Book Management App" iconClassNameRight="muidocs-icon-navigation-expand-more" showMenuIconButton={true} onLeftIconButtonClick={this.handleToggle} />
+          <Popover
+            anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+            targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+            animation={PopoverAnimationVertical}
+            open={this.state.isMenuOpen}
+          >
+            <Menu>
+              <MenuItem primaryText="書籍全検索" onClick={this.onClick} />
+              <MenuItem primaryText="メニューを閉じる" onClick={this.handleToggle} />
+            </Menu>
+          </Popover>
           <header className="App-header">
             <img src={logo} className="App-logo" alt="logo" />
-            <p className="App-title">
-              書籍管理システム
-            </p>
           </header>
-          <Button bsStyle="success" onClick={this.onClick}>書籍検索</Button>
-          <div className="Table">
-            <BootstrapTable data={this.state.books} trClassName='tr-string-example'>
-              <TableHeaderColumn isKey dataField='title'>タイトル</TableHeaderColumn>
-              <TableHeaderColumn dataField='price'>価格</TableHeaderColumn>
-              <TableHeaderColumn dataField='publish_date'>出版日</TableHeaderColumn>
-            </BootstrapTable>
-          </div>
+          <Card>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  {tableHeaders.map((header, index) => {
+                    return (
+                      <TableHeaderColumn>{header}</TableHeaderColumn>
+                    )
+                  })}
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {this.state.books.map((book, index) => {
+                  return (
+                    <TableRow key={index}>
+                      <TableRowColumn>{book["title"]}</TableRowColumn>
+                      <TableRowColumn>{book["publish_date"]}</TableRowColumn>
+                      <TableRowColumn>{book["price"]}</TableRowColumn>
+                      })}
+                    </TableRow>
+                  )
+                })}
+              </TableBody>
+            </Table>
+          </Card>
         </div>
       );
     }
   }
 }
+
 
 export default App;
