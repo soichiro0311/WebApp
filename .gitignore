@@ -21,4 +21,4 @@
 /web-client/yarn-error.log*
 
 # docker
-/docker/db
+/docker/db/mysql_data
