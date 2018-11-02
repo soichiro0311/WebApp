@@ -9,3 +9,17 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=mysql
       - MYSQL_DATABASE=bookManage
+   
+  web:
+    build: ./client
+    ports: 
+     - 3000:3000
+    depends_on: 
+     - db
+
+  server:
+    build: ./server
+    ports:
+     - 5000:5000
+    depends_on:
+     - db
