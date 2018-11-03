@@ -2,6 +2,7 @@ version: '2'
 services:
   db:
     build: ./db
+    container_name: database
     ports:
      - 3306:3306
     volumes:
@@ -12,6 +13,7 @@ services:
    
   web:
     build: ./client
+    container_name: web_client
     ports: 
      - 80:3000
     depends_on: 
@@ -19,6 +21,7 @@ services:
 
   server:
     build: ./server
+    container_name: web_server
     ports:
      - 5000:5000
     depends_on:
