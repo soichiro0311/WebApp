@@ -3,6 +3,7 @@ FROM "mysql:5.6"
 WORKDIR /usr/src
 RUN mkdir app
 WORKDIR /usr/src/app
+WORKDIR apt-get update -y && apt-get install git -y
 RUN git clone https://github.com/soichiro0311/WebApp
 
 WORKDIR /usr/src/app/WebApp/goose/db/migrations
