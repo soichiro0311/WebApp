@@ -5,7 +5,7 @@ test:
 
 development:
     driver: mymysql
-    open: tcp:database:3306*bookManage/root/mysql
+    open: tcp:localhost:3306*bookManage/root/mysql
     
 production:
     driver: postgres
