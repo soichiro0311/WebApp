@@ -2,6 +2,8 @@ FROM "mysql:5.6"
 
 WORKDIR /usr/src
 RUN mkdir app
+RUN apt-get update -y && apt-get install git -y
+
 WORKDIR /usr/src/app
 RUN git clone https://github.com/soichiro0311/WebApp
 
