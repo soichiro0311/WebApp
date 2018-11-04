@@ -13,7 +13,7 @@ import (
 // FindAll 全書籍のリストをDBから取得する。
 func FindAll() []model.Book {
 	// db接続
-	db, err := sql.Open("mysql", "root:mysql@tcp(localhost:3306)/bookManage?parseTime=true")
+	db, err := sql.Open("mysql", "root:mysql@tcp(database:3306)/bookManage?parseTime=true")
 	// db接続エラーが発生した場合に標準出力
 	if err != nil {
 		fmt.Print(err)
