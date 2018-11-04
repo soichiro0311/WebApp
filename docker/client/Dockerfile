@@ -11,4 +11,4 @@ WORKDIR /usr/src/app/WebApp/web-client
 RUN npm install
 
 # DNSでコンテナ内のドメイン名を名前解決できるまで、一旦sedで書き換える
-CMD sed s/web_server/$HOST_GLOBAL_IP_ADDRESS/ src/App.tsx && npm start
+CMD sed -i s/web_server/$HOST_GLOBAL_IP_ADDRESS/ src/App.tsx && npm start
