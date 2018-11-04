@@ -18,6 +18,9 @@ services:
      - 80:3000
     depends_on: 
      - db
+    # 一旦コンテナにホストのグローバルIPを渡すための環境変数を設定
+    environment:
+     - HOST_GLOBAL_IP_ADDRESS=${HOST_GLOBAL_IP}
 
   server:
     build: ./server
