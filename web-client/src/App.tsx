@@ -15,7 +15,7 @@ import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import logo from './logo.svg';
 
-const server = 'http://localhost:5000/books';
+const server = 'http://web_server:5000/books';
 // 計算結果を保持するstate
 interface Book {
   title: string,
