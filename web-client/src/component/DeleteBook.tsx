@@ -12,8 +12,9 @@ interface DeleteBookInput {
 // 書籍の全件リストを表示するコンポーネント
 class DeleteBook extends React.Component<DeleteBookInput, {}> {
     public render() {
+        console.log(this.props.targetBook);
         if (this.props.targetBook != null) {
-            return <FloatingButton onClick={() => this.deleteBook}>
+            return <FloatingButton onClick={this.deleteBook}>
                 <ContentRemove />
             </FloatingButton>
         } else {

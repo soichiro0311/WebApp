@@ -3,6 +3,7 @@ package controller
 import (
 	"net/http"
 
+	"../model"
 	"../service"
 	"github.com/labstack/echo"
 )
@@ -17,9 +18,10 @@ func GetAllBooks(e echo.Context) error {
 
 // DeleteBook 書籍を削除する。
 func DeleteBook(e echo.Context) error {
-	book := e.FormValue
-	// CORS対策を無効化同一ホストからのリクエストを受け付ける
-	service.DeleteBook(book)
+	book := new(model.Book)
+	e.Bind(book)
+	//CORS対策を無効化同一ホストからのリクエストを受け付ける
+	service.DeleteBook(*book)
 	e.Response().Header().Set(echo.HeaderAccessControlAllowOrigin, "*")
-	return e.JSON(http.StatusCreated, books)
+	return e.JSON(http.StatusAccepted, nil)
 }
