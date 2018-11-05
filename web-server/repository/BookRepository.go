@@ -37,3 +37,18 @@ func FindAll() []model.Book {
 	}
 	return books
 }
+
+// DeleteByTitle 対象書籍をタイトルをキーにDBから削除する。
+func DeleteByTitle(targetTitle string) {
+	// db接続
+	db, err := sql.Open("mysql", "root:mysql@tcp(database:3306)/bookManage?parseTime=true")
+	// db接続エラーが発生した場合に標準出力
+	if err != nil {
+		fmt.Print(err)
+	}
+	defer db.Close()
+
+	// Bookテーブルからタイトルをキーにレコードを削除する
+	rows, err := db.Query("delete from book where title = ?", targetTitle)
+	defer rows.Close()
+}

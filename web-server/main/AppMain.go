@@ -10,5 +10,6 @@ func main() {
 
 	// 全書籍リスト取得
 	e.GET("/books", controller.GetAllBooks)
+	e.POST("/deleteBook", controller.DeleteBook)
 	e.Start(":5000")
 }
