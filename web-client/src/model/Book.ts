@@ -1,6 +1,6 @@
 // 書籍を表すモデル
-export interface Book {
-    title: string,
-    publish_date: string,
+export class Book {
+    title: string;
+    publish_date: string;
     price: number
 }

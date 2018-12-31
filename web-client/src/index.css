@@ -3,3 +3,12 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.paper {
+  position: absolute;
+  top: 30%;
+  left: 10%;
+  width:70%;
+  height: 50%;
+  background: white;
+}

@@ -10,6 +10,8 @@ import logo from './logo.svg';
 import { Route, Link } from 'react-router-dom';
 import AllBooks from './component/AllBooks';
 import { Book } from './model/Book';
+import BookStore from './store/BookStore';
+import { Provider } from 'mobx-react';
 
 
 const server = 'http://web_server:5000/books';
@@ -21,6 +23,8 @@ interface State {
   isMenuOpen: boolean,
   books: Book[]
 }
+const bookStore =  new BookStore();
+
 class App extends React.Component<{}, State> {
   constructor(props: any) {
     super(props);
@@ -35,9 +39,7 @@ class App extends React.Component<{}, State> {
     return axios.get(server)
       .then((res) => {
         console.log(res)
-        this.setState({
-          books: res.data
-        });
+        bookStore.books=res.data
       })
       .catch((e) => {
         console.error(e);
@@ -49,7 +51,7 @@ class App extends React.Component<{}, State> {
     this.setState({
       isMenuOpen: !this.state.isMenuOpen
     });
-  }
+  } 
 
   public render() {
     return (
@@ -70,8 +72,8 @@ class App extends React.Component<{}, State> {
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
         </header>
-        <Route exact path={findAllBooksURL} render={() => <AllBooks books={this.state.books} />} />
-        <Route exact path={rootURL} render={() => null} />
+          <Route exact path={findAllBooksURL} render={() => <Provider bookStore={bookStore}><AllBooks/></Provider>}/>
+          <Route exact path={rootURL} render={() => null} />
       </div>
     );
   }

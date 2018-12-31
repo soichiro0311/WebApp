@@ -43,6 +43,7 @@ func DeleteByTitle(targetTitle string) {
 	// db接続
 	db, err := sql.Open("mysql", "root:mysql@tcp(database:3306)/bookManage?parseTime=true")
 	// db接続エラーが発生した場合に標準出力
+	fmt.Println(targetTitle)
 	if err != nil {
 		fmt.Print(err)
 	}
@@ -50,5 +51,24 @@ func DeleteByTitle(targetTitle string) {
 
 	// Bookテーブルからタイトルをキーにレコードを削除する
 	rows, err := db.Query("delete from book where title = ?", targetTitle)
+	defer rows.Close()
+}
+
+// Register 対象書籍をDBに登録する。
+func Register(targetBook model.Book) {
+	// db接続
+	db, err := sql.Open("mysql", "root:mysql@tcp(localhost:3306)/bookManage?parseTime=true")
+	// db接続エラーが発生した場合に標準出力
+	fmt.Println(targetBook)
+	fmt.Println(targetBook.Title)
+	fmt.Println(targetBook.PublishDate)
+	fmt.Println(targetBook.Price)
+	if err != nil {
+		fmt.Print(err)
+	}
+	defer db.Close()
+
+	// Bookテーブルからタイトルをキーにレコードを削除する
+	rows, err := db.Query("insert into book values (? , ? , ?)", targetBook.Title, targetBook.PublishDate, targetBook.Price)
 	defer rows.Close()
 }

@@ -6,32 +6,32 @@ import TableRowColumn from 'material-ui/Table/TableRowColumn'
 import TableHeader from 'material-ui/Table/TableHeader'
 import TableHeaderColumn from 'material-ui/Table/TableHeaderColumn'
 import TableRow from 'material-ui/Table/TableRow'
-import { Book } from '../model/Book';
+import BookStore from '../store/BookStore';
+import { inject, observer } from 'mobx-react';
 import DeleteBook from './DeleteBook';
-
-interface AllBooksInput {
-    books: Book[]
-}
-
-interface AllBooksState {
-    deleteTargetBook: Book | null
-    selectedIndex: number | null
-}
+import AddBook from './AddBook';
 
 // 書籍の全件リストを表示するコンポーネント
-class AllBooks extends React.Component<AllBooksInput, AllBooksState> {
-    constructor(props: AllBooksInput) {
-        super(props);
-        this.state = {
-            deleteTargetBook: null,
-            selectedIndex: null
-        }
+interface AllBooksProps{
+    bookStore?: BookStore
+}
+interface AllBooksState{
+    selectedIndex: number | null
+    isModalOpen: boolean
+}
+
+@inject('bookStore')
+@observer
+class AllBooks extends React.Component<AllBooksProps, AllBooksState> {
+    
+    state={
+        selectedIndex: null,
+        isModalOpen:false,
     }
     selectRow = (index: number[] | "all") => {
         var targetIndex = index[0];
         if (typeof targetIndex == 'number') {
             this.setState({
-                deleteTargetBook: this.props.books[targetIndex],
                 selectedIndex: targetIndex
             })
         }
@@ -39,7 +39,7 @@ class AllBooks extends React.Component<AllBooksInput, AllBooksState> {
 
     public render() {
         // 表のヘッダー行を作成
-        var tableHeaders = ["タイトル", "出版年月日", "価格"]
+        var tableHeaders = ["","タイトル", "出版年月日", "価格"]
         return (
             <div>
                 <Card>
@@ -47,16 +47,22 @@ class AllBooks extends React.Component<AllBooksInput, AllBooksState> {
                         <TableHeader displaySelectAll={false}>
                             <TableRow>
                                 {tableHeaders.map((header, index) => {
+                                    if(header==""){
+                                        return(
+                                            <TableHeaderColumn><AddBook bookStore={this.props.bookStore!} /></TableHeaderColumn>
+                                        )
+                                    }
                                     return (
                                         <TableHeaderColumn>{header}</TableHeaderColumn>
                                     )
                                 })}
                             </TableRow>
                         </TableHeader>
-                        <TableBody deselectOnClickaway={false} showRowHover={true} displayRowCheckbox={true}>
-                            {this.props.books.map((book, index) => {
+                        <TableBody deselectOnClickaway={false} showRowHover={true} displayRowCheckbox={false}>
+                            {this.props.bookStore!.books.map((book, index) => {
                                 return (
-                                    <TableRow key={index} selected={this.state.selectedIndex == index}>
+                                    <TableRow key={index}>
+                                        <TableRowColumn><DeleteBook targetBook={book} bookStore={this.props.bookStore!}/></TableRowColumn>
                                         <TableRowColumn>{book["title"]}</TableRowColumn>
                                         <TableRowColumn>{book["publish_date"]}</TableRowColumn>
                                         <TableRowColumn>{book["price"]}</TableRowColumn>
@@ -67,11 +73,9 @@ class AllBooks extends React.Component<AllBooksInput, AllBooksState> {
                         </TableBody>
                     </Table>
                 </Card>
-                <DeleteBook targetBook={this.state.deleteTargetBook} />
             </div>
         );
     }
 }
-
 
 export default AllBooks;
