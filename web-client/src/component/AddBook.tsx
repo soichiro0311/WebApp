@@ -1,7 +1,6 @@
 import { Book } from '../model/Book';
 import IconButton from 'material-ui/IconButton'
-import AddIcon from '@material-ui/icons/AddCircle';
-import AddBoxIcon from '@material-ui/icons/AddBox';
+import AddIcon from '@material-ui/icons/LibraryAdd';
 import ClearIcon from '@material-ui/icons/Clear';
 import BookStore from '../store/BookStore';
 import * as React from 'react';
@@ -110,7 +109,7 @@ export default class AddBook extends React.Component<AddBookProps,AddBookState> 
                         />
                         <br/>
                         <IconButton onClick={this.handleSubmit}>
-                            <AddBoxIcon color="primary" />  
+                            <AddIcon color="primary" />  
                         </IconButton>
                         <IconButton onClick={this.handleClose}>
                             <ClearIcon color="secondary" />  
